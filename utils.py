@@ -6,7 +6,7 @@ from torch.nn.utils.rnn import pad_sequence
 
 def read_corpus(file_path, source):
     data = []
-    for line in open(file_path):
+    for line in open(file_path, ncoding='utf-8'):
         sent = line.strip().split(' ')
         # only append <s> and </s> to the target sentence
         if source == 'tgt':
