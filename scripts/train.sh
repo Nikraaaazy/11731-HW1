@@ -15,7 +15,7 @@ echo save results to ${work_dir}
 
 python nmt.py \
     train \
-    --cuda \
+    --cuda true\
     --vocab ${vocab} \
     --train-src ${train_src} \
     --train-tgt ${train_tgt} \

@@ -1,23 +1,7 @@
 import math
 from typing import List
-
-import numpy as np
-
-
-def input_transpose(sents, pad_token):
-    """
-    This function transforms a list of sentences of shape (batch_size, token_num) into 
-    a list of shape (token_num, batch_size). You may find this function useful if you
-    use pytorch
-    """
-    max_len = max(len(s) for s in sents)
-    batch_size = len(sents)
-
-    sents_t = []
-    for i in range(max_len):
-        sents_t.append([sents[k][i] if len(sents[k]) > i else pad_token for k in range(batch_size)])
-
-    return sents_t
+import torch
+from torch.nn.utils.rnn import pad_sequence
 
 
 def read_corpus(file_path, source):
@@ -28,26 +12,22 @@ def read_corpus(file_path, source):
         if source == 'tgt':
             sent = ['<s>'] + sent + ['</s>']
         data.append(sent)
-
     return data
 
+def create_tensor(str_data, vocab_entry):
+    return [torch.tensor([vocab_entry[x] for x in sentence]) for sentence in str_data]
 
-def batch_iter(data, batch_size, shuffle=False):
+def batch_iter(tensor_data: torch.tensor, batch_size, shuffle=True):
     """
     Given a list of examples, shuffle and slice them into mini-batches
     """
-    batch_num = math.ceil(len(data) / batch_size)
-    index_array = list(range(len(data)))
-
     if shuffle:
-        np.random.shuffle(index_array)
+        random_indices = torch.randperm(len(data))
 
-    for i in range(batch_num):
-        indices = index_array[i * batch_size: (i + 1) * batch_size]
-        examples = [data[idx] for idx in indices]
-
+    for i in range(0, len(data), batch_size):
+        examples = [data[idx] for idx in random_indices[i: i + batch_size]]
         examples = sorted(examples, key=lambda e: len(e[0]), reverse=True)
-        src_sents = [e[0] for e in examples]
-        tgt_sents = [e[1] for e in examples]
-
-        yield src_sents, tgt_sents
+        source = pad_sequence([e[0] for e in examples])
+        target = pad_sequence([e[0] for e in examples])
+        target_mask = (target != 0) & (target != 2)
+        yield source, target, target_mask

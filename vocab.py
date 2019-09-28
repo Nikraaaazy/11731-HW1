@@ -20,7 +20,7 @@ from itertools import chain
 from docopt import docopt
 import pickle
 
-from utils import read_corpus, input_transpose
+from utils import read_corpus
 
 
 class VocabEntry(object):
