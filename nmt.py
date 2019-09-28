@@ -117,17 +117,25 @@ def train(args: Dict[str, str]):
             for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True), total=len(data) // batch_size):
                 # if args["--cuda"]:
                 #     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
-                output = model(source, target)
-                target_label = target.roll(-1, dims=0)
-                loss = criterion(output[target_mask], target_label[target_mask])
+                optimizer.zero_grad()
+                if phase == "Training":
+                    model.train()
+                    output = model(source, target)
+                    target_label = target.roll(-1, dims=0)
+                    loss = criterion(output[target_mask], target_label[target_mask])
+                    loss.backward()
+                    optimizer.step()
+                else:
+                    model.eval()
+                    with torch.no_grad():
+                        output = model(source, target)
+                        target_label = target.roll(-1, dims=0)
+                        loss = criterion(output[target_mask], target_label[target_mask])
                 total_loss += loss
                 total_iter += 1
                 temp_loss += loss
                 temp_iter += 1
-                if phase == "Training":
-                    optimizer.zero_grad()
-                    loss.backward()
-                    optimizer.step()
+
                 if temp_iter % 10 == 0:
                     print(f"Iter: {total_iter} PPL: {torch.exp(temp_loss / temp_iter).item()}")
                     temp_loss = 0
