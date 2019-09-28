@@ -99,10 +99,11 @@ def train(args: Dict[str, str]):
                 dropout_rate=float(args['--dropout']),
                 vocab=vocab)
     if args["--cuda"]:
-        model = nn.DataParallel(model)
+        if torch.cuda.device_count() > 1:
+            model = nn.DataParallel(model)
         model.cuda()
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.01)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.01, weight_decay=0.1)
     best_ppl = float("inf")
     best_model = None
 
@@ -110,7 +111,9 @@ def train(args: Dict[str, str]):
         for phase, data in all_data.items():
             print(f"{phase} Phase")
             total_loss = 0
-            iter = 0
+            total_iter = 0
+            temp_loss = 0
+            temp_iter = 0
             for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True), total=len(data) // batch_size):
                 if args["--cuda"]:
                     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
@@ -118,17 +121,22 @@ def train(args: Dict[str, str]):
                 target_label = target.roll(-1, dims=0)
                 loss = criterion(output[target_mask], target_label[target_mask])
                 total_loss += loss
-                iter += 1
+                total_iter += 1
+                temp_loss += total_loss
+                temp_iter += 1
                 if phase == "Training":
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
-                print(f"PPL: {torch.exp(loss).item()}")
-            total_ppl = torch.exp(total_loss / iter).item()
+                if temp_iter % 10 == 0:
+                    print(f"Iter: {total_iter} PPL: {torch.exp(temp_loss / temp_iter).item()}")
+                    temp_loss = 0
+                    temp_iter = 0
+            total_ppl = torch.exp(total_loss / total_iter).item()
             print(f"Total PPL: {total_ppl}")
             if phase == "Validation" and total_ppl < best_ppl:
                 best_ppl = total_ppl
-                if args["--cuda"]:
+                if args["--cuda"] and torch.cuda.device_count() > 1:
                     best_model = model.module.state_dict()
                 else:
                     best_model = model.state_dict()
