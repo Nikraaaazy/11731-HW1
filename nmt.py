@@ -115,8 +115,7 @@ def train(args: Dict[str, str]):
                 if args["--cuda"]:
                     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
                 output = model(source, target)
-                # target_label = target.roll(-1, dims=0)
-                target_label = target
+                target_label = target.roll(-1, dims=0)
                 loss = criterion(output[target_mask], target_label[target_mask])
                 total_loss += loss
                 iter += 1
