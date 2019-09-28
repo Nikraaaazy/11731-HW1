@@ -32,7 +32,7 @@ class NMT(nn.Module):
         # source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
         # src_sents = pack_padded_sequence(src_sents, source_length)
-        _, (h, c) = self.encoder(src_sents, (self.h_0.expand(1, src_sents.size()[1], 1), self.c_0.expand(1, src_sents.size()[1], 1)))
+        _, (h, c) = self.encoder(src_sents, (self.h_0.expand(-1, src_sents.size()[1], -1), self.c_0.expand(-1, src_sents.size()[1], -1)))
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
         c = c.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
