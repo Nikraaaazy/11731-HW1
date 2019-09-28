@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fee75bbc-f1f9-46e9-9331-b1a8aaa6f3e2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/costum_lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_lstm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/train.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="19" column="36" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+            <state relative-caret-position="84">
+              <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -52,10 +52,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/costum_lstm.py">
+        <entry file="file://$PROJECT_DIR$/custom_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="43" column="43" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="43" />
+            <state relative-caret-position="505">
+              <caret line="58" column="29" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="29" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -224,18 +224,18 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="9006000" />
+      <workItem from="1569637578629" duration="9122000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22490000" />
+    <option name="totallyTimeSpent" value="22606000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.105036855" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.105036855" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="aws.explorer" order="3" side_tool="true" />
@@ -292,20 +292,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/costum_lstm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="43" column="43" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/train.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
           <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="505">
+          <caret line="58" column="29" selection-start-line="58" selection-start-column="18" selection-end-line="58" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -321,8 +321,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="19" column="36" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+        <state relative-caret-position="84">
+          <caret line="5" column="37" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
