@@ -14,8 +14,11 @@ def read_corpus(file_path, source):
         data.append(sent)
     return data
 
-def create_tensor(str_data, vocab_entry):
-    return [torch.tensor([vocab_entry[x] for x in sentence]) for sentence in str_data]
+def create_tensor(str_data, vocab_entry, cuda):
+    if cuda:
+        return [torch.tensor([vocab_entry[x] for x in sentence]).cuda() for sentence in str_data]
+    else:
+        return [torch.tensor([vocab_entry[x] for x in sentence]) for sentence in str_data]
 
 def batch_iter(tensor_data: torch.tensor, batch_size, shuffle=True):
     """

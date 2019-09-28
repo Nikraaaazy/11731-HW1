@@ -84,8 +84,8 @@ def train(args: Dict[str, str]):
     train_data_src = create_tensor(read_corpus(args['--train-src'], source='src'), vocab.src)
     train_data_tgt = create_tensor(read_corpus(args['--train-tgt'], source='tgt'), vocab.tgt)
 
-    dev_data_src = create_tensor(read_corpus(args['--dev-src'], source='src'), vocab.src)
-    dev_data_tgt = create_tensor(read_corpus(args['--dev-tgt'], source='tgt'), vocab.tgt)
+    dev_data_src = create_tensor(read_corpus(args['--dev-src'], source='src'), vocab.src, args["--cuda"])
+    dev_data_tgt = create_tensor(read_corpus(args['--dev-tgt'], source='tgt'), vocab.tgt, args["--cuda"])
 
     train_data = list(zip(train_data_src, train_data_tgt))
     dev_data = list(zip(dev_data_src, dev_data_tgt))
@@ -115,8 +115,8 @@ def train(args: Dict[str, str]):
             temp_loss = 0
             temp_iter = 0
             for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True), total=len(data) // batch_size):
-                if args["--cuda"]:
-                    source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
+                # if args["--cuda"]:
+                #     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
                 output = model(source, target)
                 target_label = target.roll(-1, dims=0)
                 loss = criterion(output[target_mask], target_label[target_mask])
