@@ -6,7 +6,7 @@ import torch
 
 class NMT(nn.Module):
 
-    def __init__(self, embed_size, hidden_size, vocab, dropout_rate=0.2, num_layers = 1):
+    def __init__(self, embed_size, hidden_size, vocab, dropout_rate=0.2, num_layers = 2):
         super(NMT, self).__init__()
         self.embed_size = embed_size
         self.hidden_size = hidden_size

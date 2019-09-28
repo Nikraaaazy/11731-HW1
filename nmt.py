@@ -122,16 +122,16 @@ def train(args: Dict[str, str]):
                 loss = criterion(output[target_mask], target_label[target_mask])
                 total_loss += loss
                 total_iter += 1
-                temp_loss += total_loss
+                temp_loss += loss
                 temp_iter += 1
                 if phase == "Training":
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
-                # if temp_iter % 10 == 0:
-                print(f"Iter: {total_iter} PPL: {torch.exp(loss).item()}")
-                    # temp_loss = 0
-                    # temp_iter = 0
+                if temp_iter % 10 == 0:
+                    print(f"Iter: {total_iter} PPL: {torch.exp(temp_loss / temp_iter).item()}")
+                    temp_loss = 0
+                    temp_iter = 0
             total_ppl = torch.exp(total_loss / total_iter).item()
             print(f"Total PPL: {total_ppl}")
             if phase == "Validation" and total_ppl < best_ppl:
