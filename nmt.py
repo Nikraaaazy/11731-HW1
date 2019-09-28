@@ -121,6 +121,7 @@ def train(args: Dict[str, str]):
                 total_loss += loss
                 iter += 1
                 if phase == "Training":
+                    optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()
                 print(f"PPL: {torch.exp(loss).item()}")
