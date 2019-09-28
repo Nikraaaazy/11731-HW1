@@ -28,7 +28,7 @@ python nmt.py \
     --dropout 0.2 \
     --clip-grad 5.0 \
     --lr-decay 0.5 \
-    --lr 0.0003 \
+    --lr 0.01 \
     --cuda \
 
 #python nmt.py \
