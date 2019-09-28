@@ -20,8 +20,8 @@ class NMT(nn.Module):
         self.decoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
         self.affine = nn.Linear(hidden_size*2, hidden_size)
         self.linear = nn.Linear(hidden_size, len(vocab.tgt))
-        torch.register_buffer(h_0, torch.zeros(num_layers * 2, 1, hidden_size))
-        torch.register_buffer(c_0, torch.zeros(num_layers * 2, 1, hidden_size))
+        self.register_buffer(h_0, torch.zeros(num_layers * 2, 1, hidden_size))
+        self.register_buffer(c_0, torch.zeros(num_layers * 2, 1, hidden_size))
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
