@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "nmt.py", line 198, in <module>
+    main()
+  File "nmt.py", line 187, in main
+    torch.random.seed(seed * 13 // 7)
+TypeError: seed() takes 0 positional arguments but 1 was given

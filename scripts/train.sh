@@ -15,7 +15,6 @@ echo save results to ${work_dir}
 
 python nmt.py \
     train \
-    --cuda true\
     --vocab ${vocab} \
     --train-src ${train_src} \
     --train-tgt ${train_tgt} \
@@ -29,15 +28,17 @@ python nmt.py \
     --uniform-init 0.1 \
     --dropout 0.2 \
     --clip-grad 5.0 \
-    --lr-decay 0.5 2>${work_dir}/err.log
+    --lr-decay 0.5 \
+    --lr 0.0003
+#    --cuda \
 
-python nmt.py \
-    decode \
-    --cuda \
-    --beam-size 5 \
-    --max-decoding-time-step 100 \
-    ${work_dir}/model.bin \
-    ${test_src} \
-    ${work_dir}/decode.txt
+#python nmt.py \
+#    decode \
+#    --cuda \
+#    --beam-size 5 \
+#    --max-decoding-time-step 100 \
+#    ${work_dir}/model.bin \
+#    ${test_src} \
+#    ${work_dir}/decode.txt
 
-perl multi-bleu.perl ${test_tgt} < ${work_dir}/decode.txt
+#perl multi-bleu.perl ${test_tgt} < ${work_dir}/decode.txt

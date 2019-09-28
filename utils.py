@@ -22,12 +22,12 @@ def batch_iter(tensor_data: torch.tensor, batch_size, shuffle=True):
     Given a list of examples, shuffle and slice them into mini-batches
     """
     if shuffle:
-        random_indices = torch.randperm(len(data))
+        random_indices = torch.randperm(len(tensor_data))
 
-    for i in range(0, len(data), batch_size):
-        examples = [data[idx] for idx in random_indices[i: i + batch_size]]
+    for i in range(0, len(tensor_data), batch_size):
+        examples = [tensor_data[idx] for idx in random_indices[i: i + batch_size]]
         examples = sorted(examples, key=lambda e: len(e[0]), reverse=True)
         source = pad_sequence([e[0] for e in examples])
-        target = pad_sequence([e[0] for e in examples])
+        target = pad_sequence([e[1] for e in examples])
         target_mask = (target != 0) & (target != 2)
         yield source, target, target_mask

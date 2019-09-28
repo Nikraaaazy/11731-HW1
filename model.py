@@ -27,18 +27,20 @@ class NMT(nn.Module):
         :return: logits (T * B * target_vocab_size)
         """
         source_length = (src_sents != 0).sum(dim=0)
+        src_sents = self.source_embedding(src_sents)
         src_sents = pack_padded_sequence(src_sents, source_length)
         _, (h, c) = self.encoder(src_sents)
         _, B, V = h.size()
-        h = h.view(self.num_layers, 2, B, V).permute(0, 2, 3, 1).view(self.num_layers, B, -1)
-        c = c.view(self.num_layers, 2, B, V).permute(0, 2, 3, 1).view(self.num_layers, B, -1)
+        h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
+        c = c.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
         h = self.affine(h)
         c = self.affine(c)
+        tgt_sents = self.target_embedding(tgt_sents)
         output, _ = self.decoder(tgt_sents, (h, c))
         output = self.linear(output)
         return output
 
-    def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70) -> List[Hypothesis]:
+    def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70):
         """
         Given a single source sentence, perform beam search
 

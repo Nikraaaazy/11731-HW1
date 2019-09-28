@@ -10,7 +10,7 @@ Usage:
 
 Options:
     -h --help                               show this screen.
-    --cuda=<bool>                           use GPU
+    --cuda                                  use GPU
     --train-src=<file>                      train source file
     --train-tgt=<file>                      train target file
     --dev-src=<file>                        dev source file
@@ -102,16 +102,16 @@ def train(args: Dict[str, str]):
         model = nn.DataParallel(model)
         model.cuda()
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args["--lr"], weight_decay=0.1)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.01)
     best_ppl = float("inf")
     best_model = None
 
-    for epoch in range(args["--max-epoch"]):
-        for phase, data in all_data:
+    for epoch in range(30):
+        for phase, data in all_data.items():
             print(f"{phase} Phase")
             total_loss = 0
             iter = 0
-            for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True)):
+            for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True), total=len(data) // batch_size):
                 if args["--cuda"]:
                     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
                 output = model(source, target)
@@ -135,7 +135,7 @@ def train(args: Dict[str, str]):
 
 
 
-def beam_search(model: NMT, test_data_src: List[List[str]], beam_size: int, max_decoding_time_step: int) -> List[List[Hypothesis]]:
+def beam_search(model: NMT, test_data_src: List[List[str]], beam_size: int, max_decoding_time_step: int):
     was_training = model.training
 
     hypotheses = []
@@ -179,10 +179,11 @@ def decode(args: Dict[str, str]):
 def main():
     args = docopt(__doc__)
 
+
     # seed the random number generator (RNG), you may
     # also want to seed the RNG of tensorflow, pytorch, dynet, etc.
     seed = int(args['--seed'])
-    torch.random.seed(seed * 13 // 7)
+    torch.manual_seed(seed * 13 // 7)
 
     if args['train']:
         train(args)
