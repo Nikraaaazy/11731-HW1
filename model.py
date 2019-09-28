@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.tensor as Tensor
 from torch.nn.utils.rnn import pack_padded_sequence
 import torch
-from custom_lstm import script_lnlstm
+# from custom_lstm import script_lnlstm
 
 class NMT(nn.Module):
 
@@ -16,8 +16,8 @@ class NMT(nn.Module):
         self.num_layers = num_layers
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
-        self.encoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
-        self.decoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
+        self.encoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
+        self.decoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
         self.affine = nn.Linear(hidden_size*2, hidden_size)
         self.linear = nn.Linear(hidden_size, len(vocab.tgt))
         self.register_buffer("h_0", torch.zeros(num_layers * 2, 1, hidden_size))
@@ -29,10 +29,10 @@ class NMT(nn.Module):
         :param tgt_sents: (T * B) Padded target sequence, masking will be handled by masking
         :return: logits (T * B * target_vocab_size)
         """
-        # source_length = (src_sents != 0).sum(dim=0)
+        source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
-        # src_sents = pack_padded_sequence(src_sents, source_length)
-        _, (h, c) = self.encoder(src_sents, (self.h_0.expand(-1, src_sents.size()[1], -1), self.c_0.expand(-1, src_sents.size()[1], -1)))
+        src_sents = pack_padded_sequence(src_sents, source_length)
+        _, (h, c) = self.encoder(src_sents)
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
         c = c.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
