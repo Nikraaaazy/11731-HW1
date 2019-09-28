@@ -81,8 +81,8 @@ def train(args: Dict[str, str]):
     # List[List[str]]
     vocab = pickle.load(open(args['--vocab'], 'rb'))
 
-    train_data_src = create_tensor(read_corpus(args['--train-src'], source='src'), vocab.src)
-    train_data_tgt = create_tensor(read_corpus(args['--train-tgt'], source='tgt'), vocab.tgt)
+    train_data_src = create_tensor(read_corpus(args['--train-src'], source='src'), vocab.src, args["--cuda"])
+    train_data_tgt = create_tensor(read_corpus(args['--train-tgt'], source='tgt'), vocab.tgt, args["--cuda"])
 
     dev_data_src = create_tensor(read_corpus(args['--dev-src'], source='src'), vocab.src, args["--cuda"])
     dev_data_tgt = create_tensor(read_corpus(args['--dev-tgt'], source='tgt'), vocab.tgt, args["--cuda"])
