@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.tensor as Tensor
 from torch.nn.utils.rnn import pack_padded_sequence
 import torch
+from custom_lstm import script_lnlstm
 
 class NMT(nn.Module):
 
@@ -15,8 +16,8 @@ class NMT(nn.Module):
         self.num_layers = num_layers
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
-        self.encoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
-        self.decoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
+        self.encoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
+        self.decoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
         self.affine = nn.Linear(hidden_size*2, hidden_size)
         self.linear = nn.Linear(hidden_size, len(vocab.tgt))
 
