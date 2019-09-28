@@ -27,9 +27,9 @@ class NMT(nn.Module):
         :param tgt_sents: (T * B) Padded target sequence, masking will be handled by masking
         :return: logits (T * B * target_vocab_size)
         """
-        source_length = (src_sents != 0).sum(dim=0)
+        # source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
-        src_sents = pack_padded_sequence(src_sents, source_length)
+        # src_sents = pack_padded_sequence(src_sents, source_length)
         _, (h, c) = self.encoder(src_sents)
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 3, 1).reshape(self.num_layers, B, -1)
