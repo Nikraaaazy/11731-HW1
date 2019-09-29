@@ -85,10 +85,12 @@ def script_lnlstm(input_size, hidden_size, num_layers, bias=True,
 LSTMState = namedtuple('LSTMState', ['hx', 'cx'])
 
 
+def reverse(lst):
+    # type: (List[Tensor]) -> List[Tensor]
+    return lst[::-1]
 
 
-
-class LSTMCell(jit.ScriptModule):
+class LSTMCell(jit.script):
     def __init__(self, input_size, hidden_size):
         super(LSTMCell, self).__init__()
         self.input_size = input_size
@@ -98,7 +100,7 @@ class LSTMCell(jit.ScriptModule):
         self.bias_ih = Parameter(torch.randn(4 * hidden_size))
         self.bias_hh = Parameter(torch.randn(4 * hidden_size))
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
         hx, cx = state
@@ -121,7 +123,7 @@ class LSTMCell(jit.ScriptModule):
         return hy, (hy, cy)
 
 
-class LayerNorm(jit.ScriptModule):
+class LayerNorm(nn.Module):
     def __init__(self, normalized_shape):
         super(LayerNorm, self).__init__()
         if isinstance(normalized_shape, numbers.Integral):
@@ -135,19 +137,19 @@ class LayerNorm(jit.ScriptModule):
         self.bias = Parameter(torch.zeros(normalized_shape))
         self.normalized_shape = normalized_shape
 
-    @jit.script_method
+    # @jit.script_method
     def compute_layernorm_stats(self, input):
         mu = input.mean(-1, keepdim=True)
         sigma = input.std(-1, keepdim=True, unbiased=False)
         return mu, sigma
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input):
         mu, sigma = self.compute_layernorm_stats(input)
         return (input - mu) / sigma * self.weight + self.bias
 
 
-class LayerNormLSTMCell(jit.ScriptModule):
+class LayerNormLSTMCell(nn.Module):
     def __init__(self, input_size, hidden_size, decompose_layernorm=False):
         super(LayerNormLSTMCell, self).__init__()
         self.input_size = input_size
@@ -165,7 +167,7 @@ class LayerNormLSTMCell(jit.ScriptModule):
         self.layernorm_h = ln(4 * hidden_size)
         self.layernorm_c = ln(hidden_size)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
         hx, cx = state
@@ -185,12 +187,12 @@ class LayerNormLSTMCell(jit.ScriptModule):
         return hy, (hy, cy)
 
 
-class LSTMLayer(jit.ScriptModule):
+class LSTMLayer(nn.Module):
     def __init__(self, cell, *cell_args):
         super(LSTMLayer, self).__init__()
         self.cell = cell(*cell_args)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
         inputs = input.unbind(0)
@@ -201,22 +203,23 @@ class LSTMLayer(jit.ScriptModule):
         return torch.stack(outputs), state
 
 
-class ReverseLSTMLayer(jit.ScriptModule):
+class ReverseLSTMLayer(nn.Module):
     def __init__(self, cell, *cell_args):
         super(ReverseLSTMLayer, self).__init__()
         self.cell = cell(*cell_args)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
+        inputs = reverse(input.unbind(0))
         outputs = jit.annotate(List[Tensor], [])
-        for i in range(len(input)-1, -1, -1):
-            out, state = self.cell(input[i], state)
-            outputs = [out] + outputs
-        return torch.stack(outputs), state
+        for i in range(len(inputs)):
+            out, state = self.cell(inputs[i], state)
+            outputs += [out]
+        return torch.stack(reverse(outputs)), state
 
 
-class BidirLSTMLayer(jit.ScriptModule):
+class BidirLSTMLayer(nn.Module):
     __constants__ = ['directions']
 
     def __init__(self, cell, *cell_args):
@@ -226,7 +229,7 @@ class BidirLSTMLayer(jit.ScriptModule):
             ReverseLSTMLayer(cell, *cell_args),
         ])
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, states):
         # type: (Tensor, List[Tuple[Tensor, Tensor]]) -> Tuple[Tensor, List[Tuple[Tensor, Tensor]]]
         # List[LSTMState]: [forward LSTMState, backward LSTMState]
@@ -249,7 +252,7 @@ def init_stacked_lstm(num_layers, layer, first_layer_args, other_layer_args):
     return nn.ModuleList(layers)
 
 
-class StackedLSTM(jit.ScriptModule):
+class StackedLSTM(nn.Module):
     __constants__ = ['layers']  # Necessary for iterating through self.layers
 
     def __init__(self, num_layers, layer, first_layer_args, other_layer_args):
@@ -257,7 +260,7 @@ class StackedLSTM(jit.ScriptModule):
         self.layers = init_stacked_lstm(num_layers, layer, first_layer_args,
                                         other_layer_args)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, states):
         # type: (Tensor, List[Tuple[Tensor, Tensor]]) -> Tuple[Tensor, List[Tuple[Tensor, Tensor]]]
         # List[LSTMState]: One state per layer
@@ -277,7 +280,7 @@ class StackedLSTM(jit.ScriptModule):
 # List[List[Tuple[Tensor,Tensor]]]. It would be nice to subclass StackedLSTM
 # except we don't support overriding script methods.
 # https://github.com/pytorch/pytorch/issues/10733
-class StackedLSTM2(jit.ScriptModule):
+class StackedLSTM2(nn.Module):
     __constants__ = ['layers']  # Necessary for iterating through self.layers
 
     def __init__(self, num_layers, layer, first_layer_args, other_layer_args):
@@ -285,7 +288,7 @@ class StackedLSTM2(jit.ScriptModule):
         self.layers = init_stacked_lstm(num_layers, layer, first_layer_args,
                                         other_layer_args)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, states):
         # type: (Tensor, List[List[Tuple[Tensor, Tensor]]]) -> Tuple[Tensor, List[List[Tuple[Tensor, Tensor]]]]
         # List[List[LSTMState]]: The outer list is for layers,
@@ -302,7 +305,7 @@ class StackedLSTM2(jit.ScriptModule):
         return output, output_states
 
 
-class StackedLSTMWithDropout(jit.ScriptModule):
+class StackedLSTMWithDropout(nn.Module):
     # Necessary for iterating through self.layers and dropout support
     __constants__ = ['layers', 'num_layers']
 
@@ -321,7 +324,7 @@ class StackedLSTMWithDropout(jit.ScriptModule):
 
         self.dropout_layer = nn.Dropout(0.4)
 
-    @jit.script_method
+    # @jit.script_method
     def forward(self, input, states):
         # type: (Tensor, List[Tuple[Tensor, Tensor]]) -> Tuple[Tensor, List[Tuple[Tensor, Tensor]]]
         # List[LSTMState]: One state per layer
