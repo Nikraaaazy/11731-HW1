@@ -158,12 +158,13 @@ def train(args: Dict[str, str]):
 def beam_search(model, test_data_src, beam_size: int, max_decoding_time_step: int):
 
     hypotheses = []
-    for src_sent in tqdm(test_data_src, desc='Decoding', file=sys.stdout):
-        src_sent = src_sent.unsqueeze(1).cuda()
-        example_hyps = model.beam_search(src_sent, beam_size=beam_size, max_decoding_time_step=max_decoding_time_step)
-        for i in len(example_hyps):
-            example_hyps[i].value = [model.vocab.tgt.id2word(x) for x in example_hyps[i].value if x != 1 and x != 2]
-        hypotheses.append(example_hyps)
+    with torch.no_grad():
+        for src_sent in tqdm(test_data_src, desc='Decoding', file=sys.stdout):
+            src_sent = src_sent.unsqueeze(1).cuda()
+            example_hyps = model.beam_search(src_sent, beam_size=beam_size, max_decoding_time_step=max_decoding_time_step)
+            for i in len(example_hyps):
+                example_hyps[i].value = [model.vocab.tgt.id2word(x) for x in example_hyps[i].value if x != 1 and x != 2]
+            hypotheses.append(example_hyps)
 
     return hypotheses
 
