@@ -110,7 +110,7 @@ class NMT(nn.Module):
             beam = []
             for sentence, hidden, ll in new_beam:
                 if sentence[-1].flatten().item() == 2:
-                    hypotheses.append(Hypothesis(value=[x.flatten().item() for x in sentence], score=ll))
+                    hypotheses.append(Hypothesis(value=[self.vocab.tgt.id2word[x.flatten().item()] for x in sentence if x.flatten().item() != 1 and x.flatten().item() != 2], score=ll))
                 else:
                     beam.append((sentence, hidden, ll))
             if len(hypotheses) >= beam_size:
