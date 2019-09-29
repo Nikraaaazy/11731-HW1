@@ -155,7 +155,7 @@ def train(args: Dict[str, str]):
 
 
 
-def beam_search(model: NMT, test_data_src: List[List[str]], beam_size: int, max_decoding_time_step: int):
+def beam_search(model, test_data_src: List[List[str]], beam_size: int, max_decoding_time_step: int):
     was_training = model.training
 
     hypotheses = []
