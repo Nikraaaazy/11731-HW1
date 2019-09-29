@@ -26,9 +26,11 @@ class NMT(nn.Module):
         self.register_buffer("h_0", torch.zeros(1, hidden_size))
         self.register_buffer("c_0", torch.zeros(1, hidden_size))
         for p in self.encoder.parameters():
-            torch.nn.init.xavier_uniform(p)
+            if len(p.size()) > 1:
+                torch.nn.init.xavier_uniform(p)
         for p in self.decoder.parameters():
-            torch.nn.init.xavier_uniform(p)
+            if len(p.size()) > 1:
+                torch.nn.init.xavier_uniform(p)
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
