@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fee75bbc-f1f9-46e9-9331-b1a8aaa6f3e2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/nmt.py" beforeDir="false" afterPath="$PROJECT_DIR$/nmt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/train.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +41,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nmt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
+            <state relative-caret-position="162">
               <caret line="105" column="61" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
               <folding>
                 <element signature="e#2121#2132#0" expanded="true" />
@@ -236,12 +235,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="13021000" />
+      <workItem from="1569637578629" duration="13220000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26505000" />
+    <option name="totallyTimeSpent" value="26704000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -333,7 +332,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
+        <state relative-caret-position="162">
           <caret line="105" column="61" selection-start-line="105" selection-start-column="61" selection-end-line="105" selection-end-column="61" />
           <folding>
             <element signature="e#2121#2132#0" expanded="true" />
