@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.tensor as Tensor
 from torch.nn.utils.rnn import pack_padded_sequence
 import torch
-from custom_lstm import script_lnlstm, script_lstm
 # class MultiheadAttention(nn.Module):
 #
 #     def __init__(self):

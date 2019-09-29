@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fee75bbc-f1f9-46e9-9331-b1a8aaa6f3e2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/custom_lstm.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_lstm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="583">
-              <caret line="36" column="26" lean-forward="true" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+            <state relative-caret-position="120">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -42,7 +41,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nmt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
+            <state relative-caret-position="1816">
               <caret line="91" column="57" lean-forward="true" selection-start-line="90" selection-start-column="52" selection-end-line="91" selection-end-column="57" />
               <folding>
                 <element signature="e#2121#2132#0" expanded="true" />
@@ -231,12 +230,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="17676000" />
+      <workItem from="1569637578629" duration="17716000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31160000" />
+    <option name="totallyTimeSpent" value="31200000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -279,16 +278,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vocab.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1542">
-          <caret line="70" column="32" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="32" />
-          <folding>
-            <element signature="e#535#558#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -316,9 +305,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/vocab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1542">
+          <caret line="70" column="32" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="32" />
+          <folding>
+            <element signature="e#535#558#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
+        <state relative-caret-position="1816">
           <caret line="91" column="57" lean-forward="true" selection-start-line="90" selection-start-column="52" selection-end-line="91" selection-end-column="57" />
           <folding>
             <element signature="e#2121#2132#0" expanded="true" />
@@ -328,8 +327,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="583">
-          <caret line="36" column="26" lean-forward="true" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+        <state relative-caret-position="120">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
