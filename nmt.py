@@ -102,7 +102,7 @@ def train(args: Dict[str, str]):
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(model)
         model.cuda()
-    criterion = torch.nn.CrossEntropyLoss(reduction="sum")
+    criterion = torch.nn.CrossEntropyLoss(reduction="sum", ignore_index=0)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     best_ppl = float("inf")
     best_model = None
