@@ -57,9 +57,9 @@ class NMT(nn.Module):
         self.decoder = nn.GRU(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
         self.multihead = MultiheadAttention(num_heads=4, hidden_size=hidden_size * 2)
         self.linear = nn.Sequential(
-                        nn.Linear(4*hidden_size, hidden_size),
+                        nn.Linear(4*hidden_size, 2*hidden_size),
                         nn.ReLU6(),
-                        nn.Linear(hidden_size, len(vocab.tgt))
+                        nn.Linear(2*hidden_size, len(vocab.tgt))
         )
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
