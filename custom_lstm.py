@@ -209,10 +209,9 @@ class ReverseLSTMLayer(jit.ScriptModule):
     @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
-        inputs = input.unbind(0)
         outputs = jit.annotate(List[Tensor], [])
-        for i in range(len(inputs)-1, -1, -1):
-            out, state = self.cell(inputs[i], state)
+        for i in range(len(input)-1, -1, -1):
+            out, state = self.cell(input[i], state)
             outputs = [out] + outputs
         return torch.stack(outputs), state
 
