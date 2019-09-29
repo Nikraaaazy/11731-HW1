@@ -48,7 +48,7 @@ class NMT(nn.Module):
         self.embed_size = embed_size
         self.hidden_size = hidden_size
         self.dropout_rate = dropout_rate
-        self.register_buffer("start", torch.ones(1,1))
+        self.register_buffer("start", torch.ones(1,1).long())
         self.vocab = vocab
         self.num_layers = num_layers
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
