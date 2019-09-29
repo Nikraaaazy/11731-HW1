@@ -89,6 +89,7 @@ class NMT(nn.Module):
         output, h = self.decoder(tgt_sents, h)
         # attention = self.multihead(output, source_output, source_output)
         # output = self.linear(torch.cat((output, attention), dim=-1))
+        output = self.linear(output)
         return output, h
 
 
