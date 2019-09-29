@@ -37,7 +37,7 @@ class MultiheadAttention(nn.Module):
         product = torch.bmm(q, k) / self.scale
         score = F.softmax(product, dim=-1)
         output = torch.bmm(score, v)
-        output = output.permute(1, 0, 2).reshape(T_t, B, self.num_heads, self.head_size).view(T_t, B, -1)
+        output = output.permute(1, 0, 2).reshape(T_t, B, self.num_heads, self.head_size).reshape(T_t, B, -1)
         return output
 
 class NMT(nn.Module):
