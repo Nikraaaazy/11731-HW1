@@ -30,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="552">
-              <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+              <caret line="23" column="134" selection-start-line="23" selection-start-column="134" selection-end-line="23" selection-end-column="134" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -53,8 +53,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/custom_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1927">
-              <caret line="92" column="14" selection-start-line="92" selection-start-column="10" selection-end-line="92" selection-end-column="14" />
+            <state relative-caret-position="384">
+              <caret line="147" column="67" selection-start-line="147" selection-start-column="48" selection-end-line="147" selection-end-column="67" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -119,6 +119,7 @@
       <find>reverse</find>
       <find>jit.ScriptModule</find>
       <find>init</find>
+      <find>layernorm</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -240,12 +241,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="16133000" />
+      <workItem from="1569637578629" duration="16406000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29617000" />
+    <option name="totallyTimeSpent" value="29890000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -315,6 +316,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/custom_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="147" column="67" selection-start-line="147" selection-start-column="48" selection-end-line="147" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="779">
@@ -325,20 +336,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/custom_lstm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1927">
-          <caret line="92" column="14" selection-start-line="92" selection-start-column="10" selection-end-line="92" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
-          <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+          <caret line="23" column="134" selection-start-line="23" selection-start-column="134" selection-end-line="23" selection-end-column="134" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
