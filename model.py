@@ -35,7 +35,7 @@ class MultiheadAttention(nn.Module):
         v = F.relu6(self.v_proj(v)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
         # Scaled dot product
         product = torch.bmm(q, k) / self.scale
-        score = F.softmax(product, dim=-1)
+        score = self.dropout(F.softmax(product, dim=-1))
         output = torch.bmm(score, v)
         output = output.permute(1, 0, 2).reshape(T_t, B, self.num_heads, self.head_size).reshape(T_t, B, -1)
         return output
@@ -75,6 +75,7 @@ class NMT(nn.Module):
         tgt_sents = self.target_embedding(tgt_sents)
         output, h_dec = self.decoder(tgt_sents, h)
         attention = self.multihead(h_dec, h, h)
+        print(output.size(), attention.size())
         output = self.linear(torch.cat((output, attention), dim=-1))
         return output
 
