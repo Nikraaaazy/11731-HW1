@@ -23,8 +23,8 @@ class NMT(nn.Module):
         self.encoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
         self.decoder = script_lnlstm(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
         self.linear = nn.Linear(2*hidden_size, len(vocab.tgt))
-        self.register_buffer("h_0", torch.zeros(hidden_size))
-        self.register_buffer("c_0", torch.zeros(hidden_size))
+        self.register_buffer("h_0", torch.zeros(1, hidden_size))
+        self.register_buffer("c_0", torch.zeros(1, hidden_size))
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
@@ -35,7 +35,9 @@ class NMT(nn.Module):
         # source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
         # src_sents = pack_padded_sequence(src_sents, source_length)
-        h_and_c = [[(self.h_0, self.c_0)] * 2] * self.num_layers
+        h_0 = self.h_0.expand(src_sents.size()[1], -1)
+        c_0 = self.c_0.expand(src_sents.size()[1], -1)
+        h_and_c = [[(h_0, c_0)] * 2] * self.num_layers
         _, h_and_c = self.encoder(src_sents, h_and_c)
         # _, B, V = h.size()
         # h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
