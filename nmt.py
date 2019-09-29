@@ -175,12 +175,13 @@ def decode(args: Dict[str, str]):
     If the target gold-standard sentences are given, the function also computes
     corpus-level BLEU score.
     """
-    test_data_src = read_corpus(args['TEST_SOURCE_FILE'], source='src')
+    vocab = pickle.load(open(args['--vocab'], 'rb'))
+    test_data_src = create_tensor(read_corpus(args['TEST_SOURCE_FILE'], source='src'), vocab.src, args["--cuda"])
+
     if args['TEST_TARGET_FILE']:
-        test_data_tgt = read_corpus(args['TEST_TARGET_FILE'], source='tgt')
+        test_data_tgt = create_tensor(read_corpus(args['TEST_TARGET_FILE'], source='tgt'), vocab.src, args["--cuda"])
 
     print(f"load model from {args['MODEL_PATH']}", file=sys.stderr)
-    vocab = pickle.load(open(args['--vocab'], 'rb'))
     model = NMT(embed_size=int(args['--embed-size']),
                 hidden_size=int(args['--hidden-size']),
                 dropout_rate=float(args['--dropout']),
