@@ -94,7 +94,7 @@ class NMT(nn.Module):
 
 
     def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70):
-        source_output, h = self.encode(src_sents)
+        source_output, h = self.encode(src_sent)
         beam = [([self.start], h, 0.0)]
         hypotheses = []
         for _ in range(max_decoding_time_step):
