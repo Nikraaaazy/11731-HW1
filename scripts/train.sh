@@ -38,6 +38,7 @@ python nmt.py \
     --max-decoding-time-step 100 \
     --hidden-size 256 \
     --embed-size 256 \
+    --vocab ${vocab} \
     --uniform-init 0.1 \
     --dropout 0.2 \
     ${work_dir}/model.bin \
