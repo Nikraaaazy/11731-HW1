@@ -41,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nmt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="105" column="59" selection-start-line="105" selection-start-column="59" selection-end-line="105" selection-end-column="59" />
+            <state relative-caret-position="466">
+              <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
               <folding>
                 <element signature="e#2121#2132#0" expanded="true" />
               </folding>
@@ -63,9 +63,21 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vocab.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1542">
+              <caret line="70" column="32" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="32" />
+              <folding>
+                <element signature="e#535#558#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
+            <state relative-caret-position="301">
               <caret line="18" column="69" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="69" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -223,12 +235,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="11571000" />
+      <workItem from="1569637578629" duration="11805000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25055000" />
+    <option name="totallyTimeSpent" value="25289000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -271,33 +283,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vocab.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="70" column="32" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="32" />
-          <folding>
-            <element signature="e#535#558#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="18" column="69" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/train.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/custom_lstm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1848">
@@ -318,10 +303,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/vocab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1542">
+          <caret line="70" column="32" selection-start-line="70" selection-start-column="22" selection-end-line="70" selection-end-column="32" />
+          <folding>
+            <element signature="e#535#558#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/train.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="18" column="69" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="105" column="59" selection-start-line="105" selection-start-column="59" selection-end-line="105" selection-end-column="59" />
+        <state relative-caret-position="466">
+          <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
           <folding>
             <element signature="e#2121#2132#0" expanded="true" />
           </folding>
