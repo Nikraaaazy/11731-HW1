@@ -102,7 +102,7 @@ def train(args: Dict[str, str]):
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(model)
         model.cuda()
-    criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
+    criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.1, weight_decay=0.01)
     best_ppl = float("inf")
     best_model = None
@@ -122,7 +122,6 @@ def train(args: Dict[str, str]):
                     model.train()
                     output = model(source, target)
                     target_label = target.roll(-1, dims=0)
-                    print(((target_label[target_mask] == 0) | (target_label[target_mask] == 1)).sum())
                     loss = criterion(output[target_mask], target_label[target_mask])
                     loss.backward()
                     optimizer.step()
