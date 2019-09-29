@@ -159,7 +159,6 @@ def beam_search(model, test_data_src, beam_size: int, max_decoding_time_step: in
 
     hypotheses = []
     for i in tqdm(range(len(test_data_src)), desc='Decoding', file=sys.stdout):
-        print(test_data_src)
         src_sent = test_data_src[:, i:i+1]
         example_hyps = model.beam_search(src_sent, beam_size=beam_size, max_decoding_time_step=max_decoding_time_step)
         for i in len(example_hyps):
