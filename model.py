@@ -20,17 +20,11 @@ class NMT(nn.Module):
         self.num_layers = num_layers
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
-        self.encoder = script_lnlstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True, decompose_layernorm=True)
-        self.decoder = script_lnlstm(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers, decompose_layernorm=True)
+        self.encoder = script_lstm(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
+        self.decoder = script_lstm(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
         self.linear = nn.Linear(2*hidden_size, len(vocab.tgt))
         self.register_buffer("h_0", torch.zeros(1, hidden_size))
         self.register_buffer("c_0", torch.zeros(1, hidden_size))
-        for p in self.encoder.parameters():
-            if len(p.size()) > 1:
-                torch.nn.init.xavier_uniform(p)
-        for p in self.decoder.parameters():
-            if len(p.size()) > 1:
-                torch.nn.init.xavier_uniform(p)
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """

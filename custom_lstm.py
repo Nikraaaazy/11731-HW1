@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.nn import Parameter
 import torch.jit as jit
 import warnings
@@ -107,10 +108,14 @@ class LSTMCell(nn.Module):
                  torch.mm(hx, self.weight_hh.t()) + self.bias_hh)
         ingate, forgetgate, cellgate, outgate = gates.chunk(4, 1)
 
-        ingate = torch.sigmoid(ingate)
-        forgetgate = torch.sigmoid(forgetgate)
-        cellgate = torch.tanh(cellgate)
-        outgate = torch.sigmoid(outgate)
+        # ingate = torch.sigmoid(ingate)
+        # forgetgate = torch.sigmoid(forgetgate)
+        # cellgate = torch.tanh(cellgate)
+        # outgate = torch.sigmoid(outgate)
+        ingate = F.hardtanh(ingate, -0.5, 0.5) + 0.5
+        forgetgate = F.hardtanh(forgetgate, -0.5, 0.5) + 0.5
+        cellgate = F.hardtanh(cellgate)
+        outgate = F.hardtanh(outgate, -0.5, 0.5) + 0.5
 
         cy = (forgetgate * cx) + (ingate * cellgate)
         hy = outgate * torch.tanh(cy)

@@ -98,6 +98,8 @@ def train(args: Dict[str, str]):
                 hidden_size=int(args['--hidden-size']),
                 dropout_rate=float(args['--dropout']),
                 vocab=vocab)
+    for p in model.parameters():
+        torch.nn.init.uniform_(p, -0.1, 0.1)
     if args["--cuda"]:
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(model)
