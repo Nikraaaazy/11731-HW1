@@ -85,9 +85,7 @@ def script_lnlstm(input_size, hidden_size, num_layers, bias=True,
 LSTMState = namedtuple('LSTMState', ['hx', 'cx'])
 
 
-def reverse(lst):
-    # type: (List[Tensor]) -> List[Tensor]
-    return lst[::-1]
+
 
 
 class LSTMCell(jit.ScriptModule):
@@ -211,12 +209,12 @@ class ReverseLSTMLayer(jit.ScriptModule):
     @jit.script_method
     def forward(self, input, state):
         # type: (Tensor, Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor]]
-        inputs = reverse(input.unbind(0))
+        inputs = input.unbind(0).reverse()
         outputs = jit.annotate(List[Tensor], [])
         for i in range(len(inputs)):
             out, state = self.cell(inputs[i], state)
             outputs += [out]
-        return torch.stack(reverse(outputs)), state
+        return torch.stack(outputs.reverse()), state
 
 
 class BidirLSTMLayer(jit.ScriptModule):
