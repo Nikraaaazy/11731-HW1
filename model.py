@@ -56,7 +56,7 @@ class NMT(nn.Module):
         self.multihead = MultiheadAttention(num_heads=4, hidden_size=hidden_size * 2)
         self.linear = nn.Sequential(
                         nn.Linear(4*hidden_size, hidden_size),
-                        nn.ReLU6(),
+                        nn.Tanh(),
                         nn.Linear(hidden_size, len(vocab.tgt))
         )
 
@@ -66,33 +66,33 @@ class NMT(nn.Module):
         :param tgt_sents: (T * B) Padded target sequence, masking will be handled by masking
         :return: logits (T * B * target_vocab_size)
         """
+
+        source_output, h = self.encode(src_sents)
+        output = self.decode(source_output, tgt_sents, h)
+
+        return output
+
+    def encode(self, src_sents: Tensor):
+
         source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
         src_sents = pack_padded_sequence(src_sents, source_length)
         source_output, h = self.encoder(src_sents)
-        source_output = pad_packed_sequence(source_output)[0]
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
+        return pad_packed_sequence(source_output)[0], h
+
+    def decode(self, source_output, tgt_sents, h):
+
         tgt_sents = self.target_embedding(tgt_sents)
-        output, _ = self.decoder(tgt_sents, h)
+        output, h = self.decoder(tgt_sents, h)
         attention = self.multihead(output, source_output, source_output)
         output = self.linear(torch.cat((output, attention), dim=-1))
-        return output
+
 
     def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70):
-        """
-        Given a single source sentence, perform beam search
-
-        Args:
-            src_sent: a single tokenized source sentence
-            beam_size: beam size
-            max_decoding_time_step: maximum number of time steps to unroll the decoding RNN
-
-        Returns:
-            hypotheses: a list of hypothesis, each hypothesis has two fields:
-                value: List[str]: the decoded target sentence, represented as a list of words
-                score: float: the log-likelihood of the target sentence
-        """
+        source_output, h = self.encode(src_sents)
+        beam = [()]
 
         return hypotheses
 

@@ -109,7 +109,7 @@ def train(args: Dict[str, str]):
     best_ppl = float("inf")
     best_model = None
 
-    for epoch in range(30):
+    for epoch in range(5):
         for phase, data in all_data.items():
             print(f"{phase} Phase")
             total_loss = 0
