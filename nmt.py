@@ -160,7 +160,7 @@ def beam_search(model, test_data_src, beam_size: int, max_decoding_time_step: in
     hypotheses = []
     with torch.no_grad():
         for src_sent in tqdm(test_data_src, desc='Decoding', file=sys.stdout):
-            src_sent = src_sent.unsqueeze(1).cuda()
+            src_sent = src_sent.unsqueeze(1)
             example_hyps = model.beam_search(src_sent, beam_size=beam_size, max_decoding_time_step=max_decoding_time_step)
             for i in len(example_hyps):
                 example_hyps[i].value = [model.vocab.tgt.id2word(x) for x in example_hyps[i].value if x != 1 and x != 2]
@@ -187,6 +187,10 @@ def decode(args: Dict[str, str]):
                 dropout_rate=float(args['--dropout']),
                 vocab=vocab)
     model.load_state_dict(torch.load(args['MODEL_PATH']))
+    if args["--cuda"]:
+        if torch.cuda.device_count() > 1:
+            model = nn.DataParallel(model)
+        model.cuda()
 
     hypotheses = beam_search(model, test_data_src,
                              beam_size=int(args['--beam-size']),
