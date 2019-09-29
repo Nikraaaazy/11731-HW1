@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.tensor as Tensor
 from torch.nn.utils.rnn import pack_padded_sequence
 import torch
-from custom_lstm import script_lnlstm
+from custom_lstm import script_lnlstm, script_lstm
 # class MultiheadAttention(nn.Module):
 #
 #     def __init__(self):
@@ -25,6 +25,8 @@ class NMT(nn.Module):
         self.linear = nn.Linear(2*hidden_size, len(vocab.tgt))
         self.register_buffer("h_0", torch.zeros(1, hidden_size))
         self.register_buffer("c_0", torch.zeros(1, hidden_size))
+        self.encoder.apply(torch.nn.init.xavier_uniform)
+        self.decoder.apply(torch.nn.init.xavier_uniform)
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
