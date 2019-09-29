@@ -16,12 +16,9 @@ class MultiheadAttention(nn.Module):
         self.hidden_size = hidden_size
         self.head_size = hidden_size // num_heads
         self.scale = math.sqrt(self.head_size)
-        self.q_proj = nn.Linear(hidden_size, hidden_size)
-        self.q_bias = nn.Parameter(torch.tensor(hidden_size))
-        self.k_proj = nn.Linear(hidden_size, hidden_size)
-        self.k_bias = nn.Parameter(torch.tensor(hidden_size))
-        self.v_proj = nn.Linear(hidden_size, hidden_size)
-        self.v_bias = nn.Parameter(torch.tensor(hidden_size))
+        self.q_proj = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.k_proj = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.v_proj = nn.Linear(hidden_size, hidden_size, bias=True)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, q, k, v):
@@ -33,9 +30,9 @@ class MultiheadAttention(nn.Module):
         """
         T_t, B, _ = q.size()
         T_s, _, _ = k.size()
-        q = F.relu6(self.q_proj(q) + self.q_bias).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
-        k = F.relu6(self.k_proj(k) + self.k_bias).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
-        v = F.relu6(self.v_proj(v) + self.v_bias).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
+        q = F.relu6(self.q_proj(q)).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
+        k = F.relu6(self.k_proj(k)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
+        v = F.relu6(self.v_proj(v)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
         # Scaled dot product
         product = torch.bmm(q, k) / self.scale
         score = F.softmax(product, dim=-1)
