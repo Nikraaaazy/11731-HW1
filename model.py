@@ -1,7 +1,7 @@
 from typing import List
 import torch.nn as nn
 import torch.tensor as Tensor
-from torch.nn.utils.rnn import pack_padded_sequence
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch
 import math
 import torch.nn.functional as F
@@ -70,6 +70,7 @@ class NMT(nn.Module):
         src_sents = self.source_embedding(src_sents)
         src_sents = pack_padded_sequence(src_sents, source_length)
         source_output, h = self.encoder(src_sents)
+        source_output = pad_packed_sequence(source_output)
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         tgt_sents = self.target_embedding(tgt_sents)
