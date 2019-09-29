@@ -103,7 +103,7 @@ def train(args: Dict[str, str]):
             model = nn.DataParallel(model)
         model.cuda()
     criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
     best_ppl = float("inf")
     best_model = None
 
