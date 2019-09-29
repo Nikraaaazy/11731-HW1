@@ -5,6 +5,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch
 import math
 import torch.nn.functional as F
+from nmt import Hypothesis
 
 class MultiheadAttention(nn.Module):
     """
@@ -30,9 +31,9 @@ class MultiheadAttention(nn.Module):
         """
         T_t, B, _ = q.size()
         T_s, _, _ = k.size()
-        q = F.relu(self.q_proj(q)).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
-        k = F.relu(self.k_proj(k)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
-        v = F.relu(self.v_proj(v)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
+        q = F.relu6(self.q_proj(q)).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
+        k = F.relu6(self.k_proj(k)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
+        v = F.relu6(self.v_proj(v)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
         # Scaled dot product
         product = torch.bmm(q, k) / self.scale
         score = self.dropout(F.softmax(product, dim=-1))
@@ -47,6 +48,7 @@ class NMT(nn.Module):
         self.embed_size = embed_size
         self.hidden_size = hidden_size
         self.dropout_rate = dropout_rate
+        self.register_buffer("start", torch.ones(1,1))
         self.vocab = vocab
         self.num_layers = num_layers
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
@@ -56,7 +58,7 @@ class NMT(nn.Module):
         self.multihead = MultiheadAttention(num_heads=4, hidden_size=hidden_size * 2)
         self.linear = nn.Sequential(
                         nn.Linear(4*hidden_size, hidden_size),
-                        nn.ReLU(),
+                        nn.ReLU6(),
                         nn.Linear(hidden_size, len(vocab.tgt))
         )
 
@@ -68,7 +70,7 @@ class NMT(nn.Module):
         """
 
         source_output, h = self.encode(src_sents)
-        output = self.decode(source_output, tgt_sents, h)
+        output, _ = self.decode(source_output, tgt_sents, h)
 
         return output
 
@@ -88,12 +90,31 @@ class NMT(nn.Module):
         output, h = self.decoder(tgt_sents, h)
         attention = self.multihead(output, source_output, source_output)
         output = self.linear(torch.cat((output, attention), dim=-1))
-        return output
+        return output, h
 
 
     def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70):
         source_output, h = self.encode(src_sents)
-        beam = [()]
+        beam = [([self.start], h, 0.0)]
+        hypotheses = []
+        for _ in range(max_decoding_time_step):
+            new_beam = []
+            for sentence, hidden, ll in beam:
+                probs, curr_hidden = self.decode(source_output, sentence[-1], hidden)
+                log_p = F.log_softmax(probs, dim=-1)
+                values, candidates = torch.topk(log_p, beam_size, dim=-1)
+                for l, token in zip(values.unbind(-1), candidates.unbind(-1)):
+                    new_beam.append((sentence + [token], curr_hidden, ll + l.flatten().item()))
+            new_beam.sort(key=lambda x: x[2] / len(x[0]), reverse=True)[:beam_size - len(hypotheses)]
+            beam = []
+            for sentence, hidden, ll in new_beam:
+                if sentence[-1].flatten().item() == 2:
+                    hypotheses.append(Hypothesis(value=[x.flatten().item() for x in sentence], score=ll))
+                else:
+                    beam.append((sentence, hidden, ll))
+            if len(hypotheses) >= beam_size:
+                break
 
-        return hypotheses
+        return hypotheses[:beam_size]
+
 
