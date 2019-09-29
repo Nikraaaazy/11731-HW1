@@ -69,13 +69,12 @@ class NMT(nn.Module):
         source_length = (src_sents != 0).sum(dim=0)
         src_sents = self.source_embedding(src_sents)
         src_sents = pack_padded_sequence(src_sents, source_length)
-        _, h = self.encoder(src_sents)
+        source_output, h = self.encoder(src_sents)
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         tgt_sents = self.target_embedding(tgt_sents)
-        output, h_dec = self.decoder(tgt_sents, h)
-        attention = self.multihead(h_dec, h, h)
-        print(output.size(), attention.size())
+        output, _ = self.decoder(tgt_sents, h)
+        attention = self.multihead(output, source_output, source_output)
         output = self.linear(torch.cat((output, attention), dim=-1))
         return output
 
