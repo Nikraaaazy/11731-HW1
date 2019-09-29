@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.tensor as Tensor
 from torch.nn.utils.rnn import pack_padded_sequence
 import torch
-
+from custom_lstm import script_lnlstm
 # class MultiheadAttention(nn.Module):
 #
 #     def __init__(self):
@@ -21,9 +21,11 @@ class NMT(nn.Module):
         self.source_embedding = nn.Embedding(len(vocab.src), embed_size, padding_idx=0)
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
         self.encoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
-        self.decoder = nn.LSTM(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
-        # self.affine = nn.Linear(hidden_size*2, hidden_size)
-        self.linear = nn.Linear(2*hidden_size, len(vocab.tgt))
+        self.decoder = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers)
+        self.affine = nn.Linear(hidden_size*2, hidden_size)
+        self.linear = nn.Linear(hidden_size, len(vocab.tgt))
+        self.register_buffer("h_0", torch.zeros(hidden_size))
+        self.register_buffer("c_0", torch.zeros(hidden_size))
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
@@ -38,8 +40,8 @@ class NMT(nn.Module):
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         c = c.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
-        # h = self.affine(h)
-        # c = self.affine(c)
+        h = self.affine(h)
+        c = self.affine(c)
         tgt_sents = self.target_embedding(tgt_sents)
         output, _ = self.decoder(tgt_sents, (h, c))
         # output, _ = self.decoder(tgt_sents)
