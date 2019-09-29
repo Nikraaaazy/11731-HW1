@@ -43,6 +43,7 @@ class NMT(nn.Module):
         # h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         # c = c.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         h_and_c = [(torch.cat([temp[0][0], temp[1][0]]), torch.cat([temp[0][1], temp[1][1]])) for temp in h_and_c]
+        print(h_and_c[0][0].size())
         tgt_sents = self.target_embedding(tgt_sents)
         output, _ = self.decoder(tgt_sents, h_and_c)
         output = self.linear(output)
