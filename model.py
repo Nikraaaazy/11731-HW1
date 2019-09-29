@@ -105,6 +105,7 @@ class NMT(nn.Module):
                 values, candidates = torch.topk(log_p, beam_size, dim=-1)
                 for l, token in zip(values.unbind(-1), candidates.unbind(-1)):
                     new_beam.append((sentence + [token], curr_hidden, ll + l.flatten().item()))
+            print(new_beam)
             new_beam.sort(key=lambda x: x[2] / len(x[0]), reverse=True)[:beam_size - len(hypotheses)]
             beam = []
             for sentence, hidden, ll in new_beam:
