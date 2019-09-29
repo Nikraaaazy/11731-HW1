@@ -163,7 +163,7 @@ def beam_search(model, test_data_src, beam_size: int, max_decoding_time_step: in
             src_sent = src_sent.unsqueeze(1)
             example_hyps = model.beam_search(src_sent, beam_size=beam_size, max_decoding_time_step=max_decoding_time_step)
             for i in range(len(example_hyps)):
-                example_hyps[i].value = [model.vocab.tgt.id2word(x) for x in example_hyps[i].value if x != 1 and x != 2]
+                example_hyps[i].value = [model.vocab.tgt.id2word[x] for x in example_hyps[i].value if x != 1 and x != 2]
             hypotheses.append(example_hyps)
 
     return hypotheses
