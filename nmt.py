@@ -105,11 +105,11 @@ def train(args: Dict[str, str]):
             model = nn.DataParallel(model)
         model.cuda()
     criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=0.1)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.003, weight_decay=0.1)
     best_ppl = float("inf")
     best_model = None
 
-    for epoch in range(5):
+    for epoch in range(8):
         for phase, data in all_data.items():
             print(f"{phase} Phase")
             total_loss = 0
