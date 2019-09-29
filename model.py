@@ -11,15 +11,14 @@ class MultiheadAttention(nn.Module):
     """
     A highly oversimplified version of Multihead attention
     """
-    def __init__(self, num_heads, hidden_size, dropout=0.1):
+    def __init__(self, num_heads, in_size, out_size, dropout=0.1):
         super(MultiheadAttention, self).__init__()
         self.num_heads = num_heads
-        self.hidden_size = hidden_size
-        self.head_size = hidden_size // num_heads
+        self.head_size = out_size // num_heads
         self.scale = math.sqrt(self.head_size)
-        self.q_proj = nn.Linear(hidden_size, hidden_size, bias=True)
-        self.k_proj = nn.Linear(hidden_size, hidden_size, bias=True)
-        self.v_proj = nn.Linear(hidden_size, hidden_size, bias=True)
+        self.q_proj = nn.Linear(in_size, out_size, bias=True)
+        self.k_proj = nn.Linear(in_size, out_size, bias=True)
+        self.v_proj = nn.Linear(in_size, out_size, bias=True)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, q, k, v):
@@ -55,7 +54,7 @@ class NMT(nn.Module):
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
         self.encoder = nn.GRU(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
         self.decoder = nn.GRU(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
-        self.multihead = MultiheadAttention(num_heads=4, hidden_size=hidden_size)
+        self.multihead = MultiheadAttention(num_heads=4, in_size=hidden_size,*2, out_size=hidden_size)
         self.linear = nn.Sequential(
                         nn.Linear(3*hidden_size, hidden_size),
                         nn.ReLU6(),
