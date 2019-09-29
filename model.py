@@ -25,8 +25,10 @@ class NMT(nn.Module):
         self.linear = nn.Linear(2*hidden_size, len(vocab.tgt))
         self.register_buffer("h_0", torch.zeros(1, hidden_size))
         self.register_buffer("c_0", torch.zeros(1, hidden_size))
-        self.encoder.apply(torch.nn.init.xavier_uniform)
-        self.decoder.apply(torch.nn.init.xavier_uniform)
+        for p in self.encoder.parameters():
+            torch.nn.init.xavier_uniform(p)
+        for p in self.decoder.parameters():
+            torch.nn.init.xavier_uniform(p)
 
     def forward(self, src_sents: Tensor, tgt_sents: Tensor) -> Tensor:
         """
