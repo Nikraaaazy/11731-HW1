@@ -11,6 +11,7 @@ class MultiheadAttention(nn.Module):
     A highly oversimplified version of Multihead attention
     """
     def __init__(self, num_heads, hidden_size, dropout=0.1):
+        super(MultiheadAttention, self).__init__()
         self.num_heads = num_heads
         self.hidden_size = hidden_size
         self.head_size = hidden_size // num_heads
