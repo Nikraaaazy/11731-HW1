@@ -70,7 +70,7 @@ class NMT(nn.Module):
         src_sents = self.source_embedding(src_sents)
         src_sents = pack_padded_sequence(src_sents, source_length)
         source_output, h = self.encoder(src_sents)
-        source_output = pad_packed_sequence(source_output)
+        source_output = pad_packed_sequence(source_output)[0]
         _, B, V = h.size()
         h = h.reshape(self.num_layers, 2, B, V).permute(0, 2, 1, 3).reshape(self.num_layers, B, -1)
         tgt_sents = self.target_embedding(tgt_sents)
