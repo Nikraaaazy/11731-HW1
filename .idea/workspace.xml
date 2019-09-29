@@ -42,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/nmt.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="466">
-              <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
+              <caret line="124" column="102" selection-start-line="124" selection-start-column="102" selection-end-line="124" selection-end-column="102" />
               <folding>
                 <element signature="e#2121#2132#0" expanded="true" />
               </folding>
@@ -235,12 +235,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="11805000" />
+      <workItem from="1569637578629" duration="11871000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25289000" />
+    <option name="totallyTimeSpent" value="25355000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -333,7 +333,7 @@
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="466">
-          <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
+          <caret line="124" column="102" selection-start-line="124" selection-start-column="102" selection-end-line="124" selection-end-column="102" />
           <folding>
             <element signature="e#2121#2132#0" expanded="true" />
           </folding>

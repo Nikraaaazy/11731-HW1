@@ -122,7 +122,7 @@ def train(args: Dict[str, str]):
                     model.train()
                     output = model(source, target)
                     target_label = target.roll(-1, dims=0)
-                    print((target_label[target_mask] == 0 | target_label[target_mask] == 1).sum())
+                    print(((target_label[target_mask] == 0) | (target_label[target_mask] == 1).sum()))
                     loss = criterion(output[target_mask], target_label[target_mask])
                     loss.backward()
                     optimizer.step()
