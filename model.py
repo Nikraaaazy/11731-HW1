@@ -88,6 +88,7 @@ class NMT(nn.Module):
         output, h = self.decoder(tgt_sents, h)
         attention = self.multihead(output, source_output, source_output)
         output = self.linear(torch.cat((output, attention), dim=-1))
+        return output
 
 
     def beam_search(self, src_sent, beam_size: int=5, max_decoding_time_step: int=70):
