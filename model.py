@@ -54,9 +54,9 @@ class NMT(nn.Module):
         self.target_embedding = nn.Embedding(len(vocab.tgt), embed_size, padding_idx=0)
         self.encoder = nn.GRU(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
         self.decoder = nn.GRU(input_size=embed_size, hidden_size=2*hidden_size, num_layers=num_layers)
-        self.multihead = MultiheadAttention(num_heads=4, in_size=hidden_size*2, out_size=hidden_size)
+        self.multihead = MultiheadAttention(num_heads=8, in_size=hidden_size*2, out_size=hidden_size*4)
         self.linear = nn.Sequential(
-                        nn.Linear(2*hidden_size, hidden_size),
+                        nn.Linear(6*hidden_size, hidden_size),
                         nn.ReLU6(),
                         nn.Linear(hidden_size, len(vocab.tgt))
         )
@@ -87,9 +87,8 @@ class NMT(nn.Module):
 
         tgt_sents = self.target_embedding(tgt_sents)
         output, h = self.decoder(tgt_sents, h)
-        # attention = self.multihead(output, source_output, source_output)
-        # output = self.linear(torch.cat((output, attention), dim=-1))
-        output = self.linear(output)
+        attention = self.multihead(output, source_output, source_output)
+        output = self.linear(torch.cat((output, attention), dim=-1))
         return output, h
 
 
