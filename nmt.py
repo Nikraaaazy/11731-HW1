@@ -102,7 +102,7 @@ def train(args: Dict[str, str]):
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(model)
         model.cuda()
-    criterion = torch.nn.CrossEntropyLoss(reduction="sum", ignore_index=0)
+    criterion = torch.nn.CrossEntropyLoss(ignore_index=0)
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     best_ppl = float("inf")
     best_model = None
@@ -114,7 +114,6 @@ def train(args: Dict[str, str]):
             total_iter = 0
             temp_loss = 0
             temp_iter = 0
-            w = 0
             for source, target, target_mask in tqdm(batch_iter(data, batch_size=batch_size, shuffle=True), total=len(data) // batch_size):
                 # if args["--cuda"]:
                 #     source, target, target_mask = source.cuda(), target.cuda(), target_mask.cuda()
@@ -125,6 +124,7 @@ def train(args: Dict[str, str]):
                     target_label = target.roll(-1, dims=0)
                     loss = criterion(output[target_mask], target_label[target_mask])
                     loss.backward()
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), 5)
                     optimizer.step()
                 else:
                     model.eval()
@@ -136,13 +136,11 @@ def train(args: Dict[str, str]):
                 total_iter += 1
                 temp_loss += loss
                 temp_iter += 1
-                w += target_mask.sum()
 
                 if temp_iter % 10 == 0:
-                    print(f"Iter: {total_iter} PPL: {torch.exp(temp_loss / w).item()}")
+                    print(f"Iter: {total_iter} PPL: {torch.exp(temp_loss / temp_iter).item()}")
                     temp_loss = 0
                     temp_iter = 0
-                    w = 0
             total_ppl = torch.exp(total_loss / total_iter).item()
             print(f"Total PPL: {total_ppl}")
             if phase == "Validation" and total_ppl < best_ppl:
