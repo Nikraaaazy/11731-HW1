@@ -30,9 +30,9 @@ class MultiheadAttention(nn.Module):
         """
         T_t, B, _ = q.size()
         T_s, _, _ = k.size()
-        q = F.relu6(self.q_proj(q)).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
-        k = F.relu6(self.k_proj(k)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
-        v = F.relu6(self.v_proj(v)).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
+        q = self.q_proj(q).view(T_t, B, self.num_heads, self.head_size).view(T_t, B * self.num_heads, -1).permute(1, 0, 2)
+        k = self.k_proj(k).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 2, 0)
+        v = self.v_proj(v).view(T_s, B, self.num_heads, self.head_size).view(T_s, B * self.num_heads, -1).permute(1, 0, 2)
         # Scaled dot product
         product = torch.bmm(q, k) / self.scale
         score = self.dropout(F.softmax(product, dim=-1))
@@ -114,7 +114,7 @@ class NMT(nn.Module):
                     beam.append((sentence, hidden, ll))
             if len(hypotheses) >= beam_size:
                 break
-
+        hypotheses.sort(key=lambda x: x.score / len(x.value), reverse=True)
         return hypotheses[:beam_size]
 
 

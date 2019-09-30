@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fee75bbc-f1f9-46e9-9331-b1a8aaa6f3e2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/train.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/train.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="44" column="87" selection-start-line="44" selection-start-column="87" selection-end-line="44" selection-end-column="87" />
+            <state relative-caret-position="706">
+              <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -43,7 +41,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nmt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
+            <state relative-caret-position="141">
               <caret line="107" column="80" selection-start-line="107" selection-start-column="80" selection-end-line="107" selection-end-column="80" />
               <folding>
                 <element signature="e#2121#2132#0" expanded="true" />
@@ -55,7 +53,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
+            <state relative-caret-position="504">
               <caret line="22" column="14" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="14" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -64,10 +62,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/train.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
+            <state relative-caret-position="516">
               <caret line="37" column="31" selection-start-line="37" selection-start-column="31" selection-end-line="37" selection-end-column="31" />
             </state>
           </provider>
@@ -118,8 +116,8 @@
         <option value="$PROJECT_DIR$/costum_lstm.py" />
         <option value="$PROJECT_DIR$/custom_lstm.py" />
         <option value="$PROJECT_DIR$/nmt.py" />
-        <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/scripts/train.sh" />
+        <option value="$PROJECT_DIR$/model.py" />
       </list>
     </option>
   </component>
@@ -221,12 +219,12 @@
       <workItem from="1569612312212" duration="6515000" />
       <workItem from="1569637280275" duration="27000" />
       <workItem from="1569637318532" duration="204000" />
-      <workItem from="1569637578629" duration="31407000" />
+      <workItem from="1569637578629" duration="32464000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44891000" />
+    <option name="totallyTimeSpent" value="45948000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -289,9 +287,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/train.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="516">
+          <caret line="37" column="31" selection-start-line="37" selection-start-column="31" selection-end-line="37" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
+        <state relative-caret-position="504">
           <caret line="22" column="14" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="14" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
@@ -301,7 +306,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nmt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
+        <state relative-caret-position="141">
           <caret line="107" column="80" selection-start-line="107" selection-start-column="80" selection-end-line="107" selection-end-column="80" />
           <folding>
             <element signature="e#2121#2132#0" expanded="true" />
@@ -311,18 +316,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="44" column="87" selection-start-line="44" selection-start-column="87" selection-end-line="44" selection-end-column="87" />
+        <state relative-caret-position="706">
+          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/train.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="37" column="31" selection-start-line="37" selection-start-column="31" selection-end-line="37" selection-end-column="31" />
         </state>
       </provider>
     </entry>
